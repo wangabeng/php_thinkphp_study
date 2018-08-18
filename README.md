@@ -111,5 +111,5 @@ footer这是脚部 footer这是脚部
 我是默认email地址
 ```
 
-## thinkphp核心——验证器
+## thinkphp核心——模版
 
