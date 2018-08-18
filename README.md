@@ -103,9 +103,68 @@ base.html
 www.tp5.com/index(应用模块名)/layout（控制器名）/test2(方法名)
 
 显示
-````
 header这是header header
 footer这是脚部 footer这是脚部
 我要覆盖西湖区的地址 哈哈啊哈哈
-
 我是默认email地址
+
+## thinkphp核心——验证器
+#### 步骤1 在application\index(index模块)\controller\Index.php（创建Index.php控制器 控制器名称开头大写）
+```
+<?php
+// 命名空间
+namespace app\index\controller;
+
+// 引用Controller类
+use think\Controller;
+
+// 引用自定义的userVliadate验证器类 （第二步来做）
+use \app\index\validate\User as userValidate;
+
+// Index类继承Controller类 如果只是使用验证器 可以不用继承Controller
+class Index  extends Controller
+{
+    // protected $batchValidate = true;
+    
+    public function index()
+    {
+        $data = [
+            'name'  => 'thinkphp',
+            'email' => 'thinkphp@qq.com',
+        ];
+
+        // 创建验证器实例
+        $validate = new userValidate();
+        
+        // 使用验证器 的check方法 验证$data
+        var_dump($validate->check($data));
+
+    }
+
+}
+```
+#### 步骤2 定义验证器
+在application\index(index模块)\validate（controller同级目录）\User.php（创建User.php控制器 控制器名称开头大写）
+User.php:
+```
+<?php
+
+  namespace app\index\validate;
+  // 引用Validate类
+  use think\Validate;
+  // 定义验证器类 继承Validate类
+  class User extends Validate
+  { 
+      // 定义验证规则 固定格式写法 protected $rule = ----
+      protected $rule = [
+          'name'  =>  'require|max:25',
+          'email' =>  'email',
+      ];
+
+  }
+ ?>
+```
+#### 步骤3 测试验证器
+http://www.tp5.com/index/index/index
+输出：
+C:\wamp\www\tp5\application\index\controller\Index.php:23:boolean true
