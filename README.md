@@ -1,4 +1,4 @@
-# thinkphp核心
+# thinkphp5.1核心
 
 ## thinkphp核心——模版
 需求：
@@ -110,3 +110,5 @@ footer这是脚部 footer这是脚部
 
 我是默认email地址
 ```
+
+## thinkphp核心——验证器
