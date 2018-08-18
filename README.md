@@ -12,11 +12,11 @@ Layout.php
 ```
 <?php 
   namespace app\index\controller;
-  use think\Controller;
+  use think\Controller; 
 
-  class Layout extends Controller {
+  class Layout extends Controller { // 要想使用渲染工具 必须继承Controller类
     public function test2 () {
-      return $this->view->fetch();
+      return $this->view->fetch(); // 可以传值
     }
   }
 ?>
@@ -33,7 +33,7 @@ test2.html：
 www.tp5.com/index(应用模块名)/layout（控制器名）/test2(方法名)
 会自动渲染test2.html页面内容
 
-#### 3 创建模版
+#### 步骤3 创建模版
 首先在 application\index\(MVC)view\public(新建public文件夹)，然后分别新建3个文件：
 header.html
 ```
@@ -73,7 +73,7 @@ base.html
 </html>
 ```
 
-#### 4 在test2.html中引用模版
+#### 步骤4 在test2.html中引用模版
 ```
 <!DOCTYPE html>
 <html lang="en">
@@ -98,7 +98,7 @@ base.html
 </html>
 ```
 
-#### 5 测试 
+#### 步骤5 测试 
 在浏览器中输入
 www.tp5.com/index(应用模块名)/layout（控制器名）/test2(方法名)
 
@@ -112,3 +112,4 @@ footer这是脚部 footer这是脚部
 ```
 
 ## thinkphp核心——验证器
+
