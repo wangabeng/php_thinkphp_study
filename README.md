@@ -37,6 +37,7 @@ www.tp5.com/index(应用模块名)/layout（控制器名）/test2(方法名)
 首先在 application\index\(MVC)view\public(新建public文件夹)，然后分别新建3个文件：
 header.html
 ```
+<title>[title]</title> <!-- 这个变量在使用的时候传入 -->
 <h2>header这是header header</h2>
 ```
 
@@ -55,7 +56,7 @@ base.html
 </head>
 <body>
   <!-- 引用模版文件header.html -->
-  {include file="public/header" /}
+  {include file="public/header" title="传给header的title变量" /}
 
   <!-- 引用模版文件footer.html -->
   {include file="public/footer" /}
