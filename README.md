@@ -169,3 +169,61 @@ User.php:
 http://www.tp5.com/index/index/index
 输出：
 C:\wamp\www\tp5\application\index\controller\Index.php:23:boolean true
+
+## thinkphp上线部署
+1 配置nginx confi文件
+/etc/nginx/conf.d/testphp.conf
+参照：https://blog.csdn.net/woshihaiyong168/article/details/54973353
+```
+server {    
+        listen       80;    
+        server_name  zixi.benkid.cn;    
+        charset utf-8;    
+        access_log off;   
+        root /data/www/tp5/public/;    
+        index  index.html index.htm index.php;    
+        location / {    
+            if (!-e $request_filename) {    
+                rewrite ^(.*)$ /index.php?s=$1 last;    
+                break;    
+            }    
+        }    
+        error_page   500 502 503 504  /50x.html;    
+        location = /50x.html {    
+            root   html;    
+        }    
+        location ~ \.php$ {    
+           fastcgi_pass   127.0.0.1:9000;    
+           fastcgi_index index.php;    
+           include fastcgi_params;    
+           set $real_script_name $fastcgi_script_name;    
+           if ($fastcgi_script_name ~ "^(.+?\.php)(/.+)$") {    
+               set $real_script_name $1;    
+               set $path_info $2;    
+           }    
+           fastcgi_param SCRIPT_FILENAME $document_root$real_script_name;    
+           fastcgi_param SCRIPT_NAME $real_script_name;    
+           fastcgi_param PATH_INFO $path_info;    
+        }    
+        location ~ .*\.(gif|jpg|jpeg|png|bmp|swf|flv|ico)$ {    
+            expires 30d;    
+            access_log off;    
+        }    
+        location ~ .*\.(js|css)?$ {    
+            expires 7d;    
+            access_log off;    
+       }    
+} 
+```
+2 拷贝tp5项目文件夹至/data/www/目录下
+/data/www/tp5
+备注：
+nginx配置为：
+root /data/www/tp5/public/;
+
+3 输入域名/hello  即成功
+如果没有在路由中配置 则输入：
+域名/模块名/控制器名/方法名
+
+
+
