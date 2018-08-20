@@ -226,4 +226,50 @@ root /data/www/tp5/public/;
 域名/模块名/控制器名/方法名
 
 
+### composer在window系统中的安装和使用：
+1 安装
+下载地址 https://getcomposer.org/Composer-Setup.exe
+下载后会自动安装在我的php的安装目录：C:\wamp\bin\php\php5.6.25
+
+2 打开命令行工具 如git bash中输入 
+```
+composer
+```
+如果出现composer字样 就代表安装成功
+
+3 使用 在项目文件夹的根目录新建 composer.json 文件
+monolog(插件名)/monolog（作者名） 
+```
+{
+    "require": {
+        "monolog/monolog": "1.2.*"
+    }
+}
+```
+然后执行 comoser install （如果打开爬墙工具 会更快）
+
+4 使用 可以在https://packagist.org/中搜索这个包 查看如何使用
+```
+<?php 
+  require 'vendor/autoload.php';
+  use Monolog\Logger;
+  use Monolog\Handler\StreamHandler;
+
+  // create a log channel
+  $log = new Logger('name');
+  $log->pushHandler(new StreamHandler('monolog.log', Logger::WARNING));
+
+  // add records to the log
+  $log->warn('警告日志');
+  $log->err('错误日志');
+
+  echo 'ok'.$log->err('错误日志');
+
+?>
+
+```
+5 总结用法
+只需一个配置文件composer.json，一行指令composer install，代码中引入autoload.php，即可完美地使用第三方包。
+更多用法见（需付费）：
+https://www.jianshu.com/p/adcae6213e9b
 
