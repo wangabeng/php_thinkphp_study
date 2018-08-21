@@ -286,8 +286,8 @@ https://www.jianshu.com/p/adcae6213e9b
 ### thinkphp关于大小写
 比如 访问地址是
 http://www.tp5.com/index（模块名）/item_detail（控制器名 类文件名）/itemdetail（方法名）
-控制器名（类文件名 类名和类文件名保存一致）:驼峰命名 首字母大写（其他文件小写加下划线命名）
-方法名 驼峰命名 首字母小写
+1 控制器名（类文件名 类名和类文件名保存一致）:驼峰命名 首字母大写（其他文件小写加下划线命名）
+2 方法名 驼峰命名 首字母小写
 application\index\controller\ItemDetail.php
 ```
 <?php  
