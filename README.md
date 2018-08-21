@@ -273,3 +273,12 @@ monolog(插件名)/monolog（作者名）
 更多用法见（需付费）：
 https://www.jianshu.com/p/adcae6213e9b
 
+
+### thinkphp 视图模块引用全局css js img文件
+1 www\tp5\public\static 在static目录下新建css js img目录
+
+2 用法 比如图片放在以上新建的img目录里
+在视图index.html这样使用
+```
+<img src="/static/index/img/waiting.png" alt="">
+```
