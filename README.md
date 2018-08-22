@@ -396,3 +396,5 @@ application/index/index.php
       return $aoData;
   }
 ```
+TP5图片上传
+https://www.jianshu.com/p/5cd73628da9d
