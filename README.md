@@ -302,3 +302,28 @@ application\index\controller\ItemDetail.php
 ?>
 ```
 在地址栏访问该方法时使用：http://www.tp5.com/index（模块名）/item_detail（控制器名 类文件名 在地址栏中小写加下划线）/itemdetail（方法名）
+
+### thinkphp 获取URL地址传递的参数
+1 页面的url
+http://www.tp5.com/itemdetail/1
+2 路由定义
+Route::get('itemdetail/:index', 'index/item_detail/itemdetail');
+3 获取参数
+使用助手函数
+use think\facade\Request;
+```
+<?php  
+  namespace app\index\controller;
+
+  use think\facade\Request;
+
+  class ItemDetail {
+    public function itemDetail () {
+      $param = Request()->param('index');
+      // 可以根据不同的参数 查询数据库
+      return 'item detail'.$param;
+    }
+  }
+
+?>
+```
