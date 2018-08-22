@@ -280,7 +280,7 @@ https://www.jianshu.com/p/adcae6213e9b
 2 用法 比如图片放在以上新建的img目录里
 在视图index.html这样使用
 ```
-<img src="/static/index/img/waiting.png" alt="">
+<img src="/static/img/waiting.png" alt="">
 ```
 
 ### thinkphp关于大小写
@@ -327,3 +327,44 @@ use think\facade\Request;
 
 ?>
 ```
+
+### thinkphp form表单提交及文件上传
+1 html模版(如果涉及文件上传 enctype="multipart/form-data"这个必不可少)
+```
+    <form action="/index/index/testUpload" method="post" enctype="multipart/form-data">
+      <input type="text" name='content'>
+      <input type="file" name='image'>
+      <input type="submit" value="提交">
+    </form>
+```
+2 出来表单请求的方法
+```
+  // 图片上传测试
+  public function testUpload () {
+      // 获取参数2种方法
+      $param = Request()->param('content');
+      $file = Request()->file('image');
+      // $info = $file->move( '../uploads');
+      $info = $file->move( '../uploads');
+      if($info){
+          // 成功上传后 获取上传信息
+          // 输出 jpg
+          echo $info->getExtension();
+          // 输出 20160820/42a79759f284b767dfcb2a0197904287.jpg
+          echo $info->getSaveName();
+          // 输出 42a79759f284b767dfcb2a0197904287.jpg
+          echo $info->getFilename(); 
+      }else{
+          // 上传失败获取错误信息
+          echo $file->getError();
+      }
+  }
+```
+3 注意的事项
+文件存储路径：
+$info = $file->move( '../uploads'); // 会自动在tp5根目录创建一个upload文件夹 上传的文件存储在 tp5根目录/uploads/20180822/XXXXXX.jpg
+(会自动改名字)
+
+4 获取参数
+use think\facade\Request;
+$param = Request()->param('content'); // 获取参数
