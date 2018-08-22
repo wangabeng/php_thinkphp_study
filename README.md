@@ -368,3 +368,31 @@ $info = $file->move( '../uploads'); // 会自动在tp5根目录创建一个uploa
 4 获取参数
 use think\facade\Request;
 $param = Request()->param('content'); // 获取参数
+
+### thinkphp ajax发送请求
+1 html发送请求
+```
+ $.ajax({
+    dataType : 'json',
+    type : 'POST',
+    url : '/index/index/testUpload',
+    async : true,
+    data : {
+        "aoData" : 'aaaa'//测试数据 
+    },
+    success : function(data){
+        console.log(data);
+    },
+    error : function(XMLHttpRequest, textStatus, errorThrown) {
+        console.log(XMLHttpRequest.status + "," + textStatus);
+    }
+}); 
+```
+2 服务器端
+application/index/index.php
+```
+  public function testUpload () {
+      $aoData = Request()->param('aoData');
+      return $aoData;
+  }
+```
