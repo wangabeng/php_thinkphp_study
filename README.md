@@ -462,3 +462,90 @@ Config::get('root_path'); // 获取网站地址
 ```
 'ROOT_PATH'.Config::get('root_path').$info->getPathName();  // http://www.tp5.com/uploads/20180825/160761a1048b07a4678d54ff297a6ae2.jpg 即是改文件地址
 ```
+
+### ajax异步上传图片 无刷新页面实现图片预览 使用场景：form表单提交上传图片 实现无刷新预览
+#### 原理：在前端创建一个new FormData()对象 然后把要上传的表单信息放到这个对象中 把这个对象作为data值提交给后端
+1 前端
+```
+<form action="" id="form">
+  用户名：<input type="text" name="user"/></br>
+  密码：<input type="password" name="pass" /></br>
+  性别：<input type="radio" name="sex" value="男"/>男
+  <input type="radio" name="sex" value="女"/>女
+  头像：<input type="file" id="file" name="file"/></br>
+  <button id="btn" type="button">提交</button>
+</form>
+<div class="con"></div>
+```
+2 创建完成后，首先我们要先拿到用户从本上传的图片的信息，代码如下
+```
+var imgs=[];//存储图片链接
+ //为文件上传添加change事件
+ var fileM=document.querySelector("#file");
+ $("#file").on("change",function(){
+  console.log(fileM.files);
+  //获取文件对象，files是文件选取控件的属性，存储的是文件选取控件选取的文件对象，类型是一个数组
+  var fileObj=fileM.files[0];
+  //创建formdata对象，formData用来存储表单的数据，表单数据时以键值对形式存储的。
+  var formData=new FormData();
+  formData.append('file',fileObj);
+```
+3 这里的formData就是我们现在要的存储文件信息的对象，然后我们需要把它用ajax请求提交给后台：
+```
+//创建ajax对象
+ var ajax=new XMLHttpRequest();
+ //发送POST请求
+ ajax.open("POST","http://localhost/phpClass/file-upload/move_file.php",true);
+ ajax.send(formData);
+ ajax.onreadystatechange=function(){
+ if (ajax.readyState == 4) {
+  if (ajax.status>=200 &&ajax.status<300||ajax.status==304) {
+  console.log(ajax.responseText);
+  var obj=JSON.parse(ajax.responseText);
+  alert(obj.msg);
+  if(obj.err == 0){、
+   //上传成功后自动动创建img标签放在指定位置
+   var img =$("<img src='"+obj.msg+"' alt='' />");
+   $(".con").append(img);
+   imgs.push(obj.msg);
+  }else{
+   alert(obj.msg);
+  }
+  }
+ }
+ }
+});
+```
+4 然后我们请求成功后，后台肯定要做出相应的处理，并且把图片存到指定的文件夹里，所以相应的PHP应该完成这些操作
+```
+<?php
+//解决跨域问题
+header("Access-Control-Allow-Origin:*");
+//说明向前台返回的数据类型为JSON
+header("Content-type:text/json");
+//$_FILES超全局变量存储是文件数据，是一个关联数组
+ $fileObj=$_FILES['file'];
+ var_dump($fileObj);
+ if($fileObj["error"]==0){
+ //判断文件是否合法
+ $types=["jpg","jpeg","png","gif"];
+ $type = explode("/", $fileObj["type"])[1];
+ if(in_array($type, $types)){
+  $time = time();//获取时间戳 返回一个整形
+  //获取文件详细路径
+  $filePath="http://localhost/phpClass/image1".$time.".".$type;
+  echo $filePath;
+  //移动文件
+  $res=move_uploaded_file($fileObj["tmp_name"],"../image1/".$time.".".$type);
+  if($res){
+  $infor=array("err"=>0,"msg"=>"文件移动成功");
+  }else{
+  $infor=array("err"=>1,"msg"=>"文件移动失败");
+  }
+ }else{
+  $infor=array("err"=>1,"msg"=>"文件格式不合法");
+ }
+ echo json_encode($infor);
+ }
+?>
+```
