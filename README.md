@@ -398,3 +398,67 @@ application/index/index.php
 ```
 TP5图片上传
 https://www.jianshu.com/p/5cd73628da9d
+
+### thinkphp图片上传后获取上传图片的相关信息
+1 html
+```
+<form action="/index/index/testUpload" method="post" enctype="multipart/form-data">
+
+  <input type="text" name='content'>
+  <input type="file" name='image'>
+  <input type="submit" value="提交">
+</form>
+```
+
+2 在php处理
+```
+// 图片上传测试
+public function testUpload () {
+    // 获取参数2种方法
+    $param = Request()->param('content');
+    $file = Request()->file('image');
+    // $info = $file->move( '../uploads');
+    $info = $file->move('uploads');
+    if($info){
+        // 成功上传后 获取上传信息
+        var_dump($info);
+        echo 'ROOT_PATH'.Config::get('root_path').$info->getPathName();
+        // 输出 jpg
+        echo $info->getExtension();
+        // 输出 20160820/42a79759f284b767dfcb2a0197904287.jpg
+        echo $info->getSaveName();
+        // 输出 42a79759f284b767dfcb2a0197904287.jpg
+        echo $info->getFilename(); 
+    }else{
+        // 上传失败获取错误信息
+        echo $file->getError();
+    }
+    // $aoData = Request()->param('aoData');
+    // return $aoData;
+  }
+```
+2-1 获取上传文件的相关信息
+$info = $file->move('uploads') 是在public根目录下创建uploads文件夹 然后按照日期保存文件var_dump($info);
+获取上传文件的路径名
+```
+echo $info->getPathName(); // uploads\20180825\cc61cdcaf48583ea61870c796e925c10.jpg
+```
+2-2 获取网站的名称
+首先在tp5根目录下设置app.php
+```
+// 自定义app网址
+'root_path' => 'http://www.tp5.com/',
+```
+首先引入Env类
+```
+use think\facade\Config;
+```
+然后
+```
+Config::get('root_path'); // 获取网站地址
+
+```
+2-3 把文件网站地址及路径名拼接起来
+```
+'ROOT_PATH'.Config::get('root_path').$info->getPathName();  // http://www.tp5.com/uploads/20180825/160761a1048b07a4678d54ff297a6ae2.jpg 即是改文件地址
+```
