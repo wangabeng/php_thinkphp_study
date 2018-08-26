@@ -67,8 +67,8 @@ base.html
   {/block}
 
 <!-- 自定义默认显示内容 email ->
-    {block name='email'}
-    <p>我是默认email地址</p>
+  {block name='email'}
+    <p>email地址：</p>
   {/block}
 </body>
 </html>
@@ -93,7 +93,7 @@ base.html
   
   <!-- 覆盖在base.html中定义的默认显示区email 如果在此没有定义 就会显示base.html中定义的默认设置 -->
   {block name='email'}
-    <p>我是默认email地址</p>
+    __block__ @ThinkPHP 版权所有
   {/block}
 </body>
 </html>
@@ -107,7 +107,9 @@ www.tp5.com/index(应用模块名)/layout（控制器名）/test2(方法名)
 header这是header header
 footer这是脚部 footer这是脚部
 我要覆盖西湖区的地址 哈哈啊哈哈
-我是默认email地址
+我是默认email地址 @ThinkPHP 版权所有
+
+## thinkphp核心—模板 __block__用法：见上 引用自身 __block__
 
 ## thinkphp核心——验证器
 #### 步骤1 在application\index(index模块)\controller\Index.php（创建Index.php控制器 控制器名称开头大写）
