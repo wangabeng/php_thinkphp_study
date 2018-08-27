@@ -551,3 +551,68 @@ header("Content-type:text/json");
  }
 ?>
 ```
+
+### thinkphp验证码使用
+1 安装
+切换到tp5根目录 执行命令行工具安装think-captcha
+```
+composer require topthink/think-captcha
+```
+
+2 html及js
+在html模版中
+```
+    <form action="/index/index/testUpload" method="post" enctype="multipart/form-data">
+      
+      <!-- 测试验证码 -->
+      <input type="text" name="verifyCode" id='verifyCode' class="pass-text-input " placeholder="请输入验证码">
+      <div class='test-code'>{:captcha_img()}</div>
+
+      <input id='submitBtn' type="button" value="提交">
+    </form>
+```
+在js中发送ajax请求
+请求后端验证 可以在输入验证码input框失去焦点的时候通过ajax请求无刷新验证，本例采用按钮提交ajax无刷新验证
+```
+    $('#submitBtn').on('click', function () {
+      // 发送ajax请求
+      $.ajax({
+        dataType : 'json',
+        type : 'POST',
+        url : '/index/index/testUpload',
+        async : true,
+        data : {
+            "aoData" : $('#verifyCode').val()//测试数据 
+        },
+        success : function(data){
+            console.log(data);
+        },
+        error : function(XMLHttpRequest, textStatus, errorThrown) {
+            console.log(XMLHttpRequest.status + "," + textStatus);
+        }
+      });      
+    });
+```
+3 在服务器端得到数据并验证，然后返回处理结果给前端。必须要引入Captcha类 才能使用Captcha的check方法
+```
+    use think\facade\Request;
+    use think\captcha\Captcha;
+
+    public function testUpload () {
+        
+        // 获取ajax参数
+        $paramData = Request()->param('aoData');
+        // 创建Captcha对象
+        $captcha = new Captcha();
+        // 执行验证
+        $sum = $captcha->check($paramData);
+        
+        // 返回验证结果
+        if (!$sum){
+            return json("验证码错误");
+        } else {
+            return json('ok');
+        }
+
+    }
+```
