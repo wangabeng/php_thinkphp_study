@@ -626,3 +626,23 @@ composer require topthink/think-captcha
 配置文件位置
 tp5\vendor\topthink\think-captcha\src\Captcha.php
 如更改验证码长度 length为4.详细配置见 https://www.kancloud.cn/manual/thinkphp5_1/354122
+
+### thinkphp 设置session（见 https://www.kancloud.cn/manual/thinkphp5_1/354117）
+1 引用Session类
+```
+use think\facade\Session;
+```
+2 基础用法
+```
+// 赋值（当前作用域）
+Session::set('name','thinkphp');
+// 判断（当前作用域）是否赋值
+Session::has('name');
+// 取值（当前作用域）
+Session::get('name');
+// 删除（当前作用域）
+Session::delete('name');
+// 删除（当前作用域）
+Session::delete('name');
+```
+
