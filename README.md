@@ -111,7 +111,7 @@ footer这是脚部 footer这是脚部
 
 ## thinkphp核心—模板 __block__用法：见上 引用自身 __block__
 
-## thinkphp核心——验证器
+## thinkphp核心——验证器之一
 #### 步骤1 在application\index(index模块)\controller\Index.php（创建Index.php控制器 控制器名称开头大写）
 ```
 <?php
@@ -171,6 +171,70 @@ User.php:
 http://www.tp5.com/index/index/index
 输出：
 C:\wamp\www\tp5\application\index\controller\Index.php:23:boolean true
+
+## thinkphp核心——验证器之二 批量验证
+### 批量验证器 就是说比如定义了2个以上的验证规则，如果是非批量验证器，如果有2个以上验证不通过，则只会出现第一个报错的时候错误信息。而批量验证，则返回一个错误信息组。
+1 定义验证器 application/index/validate/User.php
+```
+<?php
+
+  namespace app\index\validate;
+
+  use think\Validate;
+  // 定义验证器类
+  class User extends Validate
+  {
+      protected $rule = [
+          'name'  =>  'require|max:25',
+          'email' =>  'email',
+      ];
+
+  }
+ ?>
+```
+2 使用验证器
+application/index/controller/index/Index.php
+```
+<?
+  namespace app\index\controller;
+  use think\Controller;
+
+  // userVliadate验证器
+  use \app\index\validate\User as userValidate;
+  
+  class Index extends Controller {
+    // 是否批量验证
+    protected $batchValidate = true;
+    
+    public function testValidate () {
+
+        $data = [
+            'name'  => '',
+            'email' => 'thinkphp.com',
+        ];
+
+        // $validate = new userValidate();
+        // if(!($validate->check($data))) {
+        //     return ($validate->getError());
+        // }
+        
+        // 这里不可以用UserValidate
+        $result = $this->validate($data, '\app\index\validate\User');
+
+        if (true !== $result) {
+            // 验证失败 输出错误信息
+            return json($result);
+        }
+
+    }
+  }
+php>
+```
+3 测试 浏览器输入 http://www.tp5.com/index/index/testValidate
+输入结果：
+```
+{"name":"name不能为空","email":"email格式不符"}
+```
 
 ## thinkphp上线部署
 1 配置nginx confi文件
