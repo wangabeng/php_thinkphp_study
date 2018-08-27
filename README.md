@@ -560,20 +560,26 @@ composer require topthink/think-captcha
 ```
 
 2 html及js
-在html模版中
+在html模版中(验证码图片文件也可以这样写 <img src="{:captcha_src()}" alt="captcha" />)
 ```
     <form action="/index/index/testUpload" method="post" enctype="multipart/form-data">
       
       <!-- 测试验证码 -->
       <input type="text" name="verifyCode" id='verifyCode' class="pass-text-input " placeholder="请输入验证码">
       <div class='test-code'>{:captcha_img()}</div>
-
+      
       <input id='submitBtn' type="button" value="提交">
     </form>
 ```
 在js中发送ajax请求
 请求后端验证 可以在输入验证码input框失去焦点的时候通过ajax请求无刷新验证，本例采用按钮提交ajax无刷新验证
 ```
+    // 刷新验证码
+    $('.test-code img').on('click', function () {
+      $(this).attr('src', "{:captcha_src('')}");
+    });
+    
+    // 发送验证码验证请求
     $('#submitBtn').on('click', function () {
       // 发送ajax请求
       $.ajax({
@@ -616,3 +622,7 @@ composer require topthink/think-captcha
 
     }
 ```
+4 附：更改验证码设置
+配置文件位置
+tp5\vendor\topthink\think-captcha\src\Captcha.php
+如更改验证码长度 length为4.详细配置见 https://www.kancloud.cn/manual/thinkphp5_1/354122
