@@ -184,9 +184,25 @@ C:\wamp\www\tp5\application\index\controller\Index.php:23:boolean true
   // 定义验证器类
   class User extends Validate
   {
+      // 验证规则
       protected $rule = [
           'name'  =>  'require|max:25',
           'email' =>  'email',
+      ];
+      // 自定义验证规则 在regex中设置正则验证
+      /*
+      protected $rule = [
+        'name'  => ['require', 'max' => 25, 'regex' => '/^[\w|\d]\w+/'],
+        'age'   => ['number', 'between' => '1,120'],
+        'email' => 'email',
+      ];
+      */
+      
+      // 自定义验证信息
+      protected $message = [
+        'name.require' => '名称必须',
+        'name.max'     => '名称最多不能超过25个字符',
+        'email'        => '邮箱格式错误',
       ];
 
   }
