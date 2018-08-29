@@ -726,3 +726,21 @@ Session::delete('name');
 Session::delete('name');
 ```
 
+### thinkphp视图模版中直接使用数据
+1 使用session数据
+{:session('username')}
+2 验证码
+{:captcha_img()}
+3 路由 可以直接写
+```
+<form action="/index/index/testUpload" method="post" enctype="multipart/form-data">
+    ...  
+    <input id='submitBtn' type="button" value="提交">
+</form>
+```  
+也可以这样写：
+```
+<a class="session-test" href='{:url("/index/index/deleteSession")}'>{:session('username')}</a>
+```
+{:url("/index/index/deleteSession")} 引号内分别是模块名 控制器名（类名） 方法名 
+    
